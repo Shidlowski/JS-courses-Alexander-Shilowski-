@@ -88,10 +88,10 @@ vivod(rezultZurnal);
 //вывод в журнал
 function vivod(chislo){
     var data=new Date();
-    window.document.getElementById("edit").innerText=eval(chislo);
+    window.document.getElementById("edit").innerText=(eval(chislo)).toFixed(3);
     window.document.getElementById("textLog").innerText+=data.getHours()+":"+
                                                             data.getMinutes()+":"+
                                                                 data.getMilliseconds()+" : "+
-                                                                    chislo+" = "+eval(chislo)+"\n";
+                                                                    chislo+" = "+(eval(chislo)).toFixed(3)+"\n";
 flag=false; //можем производить действия с новым числом
 }
