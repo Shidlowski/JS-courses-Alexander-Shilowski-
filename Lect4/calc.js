@@ -16,8 +16,6 @@ function moveRect(e){
 }
 addEventListener("keydown",moveRect);
 
-var flag=new Boolean(false); //что бы использовалась только одна операция
-
 //стирание последнего элемента
 del.onclick=function(){
     var edit=window.document.getElementById("edit").innerText; //текстовое поля для вывода
@@ -30,7 +28,6 @@ del.onclick=function(){
 //очистка
 clear.onclick=function(){
     window.document.getElementById("edit").innerText="0";
-    flag=false; //включаем кнопки действий
 }
 
 // получение значение элемента и добавление в строку
@@ -41,7 +38,7 @@ document.getElementById('parent').onclick = function(e){
         if(elem[key]==="<") {err=true;
         break;}
     }
-    if(elem!=="&lt;==" && elem!="C" && elem!=="=" && err==false){
+    if(elem!=="←" && elem!="C" && elem!=="=" && err==false){    
          add(elem); //добавление в строку
         }
     err=false;
@@ -50,48 +47,28 @@ document.getElementById('parent').onclick = function(e){
 //добавление элемента в строку
 function add(str){
     var edit=window.document.getElementById("edit").innerText;
-    if(edit==="0" && str!=="." ){
+    var posSimvol=edit[edit.length-1];
+    if(edit==="0" && str!=="+" && str!=="-" && str!=="*" && str!=="/" && str!=="."){
         window.document.getElementById("edit").innerText=str;
     }
     else{
-        if((str==="*" || str==="/" || str==="+" || str==="-") && flag==false){
-        window.document.getElementById("edit").innerText+=str;
-        flag=true;
-    }
-    else if (str!=="*" && str!=="/" && str!=="+" && str!=="-") {
-        window.document.getElementById("edit").innerText+=str;
-    }
-    }
-}
-
-enter.onclick=function(){
-    str=window.document.getElementById("edit").innerText;
-    var a=""; //число до знака
-    var b=""; // число после знака
-    var znak=""; //знак
-    for(var i=0;i<str.length;i++){
-        if(i==0){a+=str[i];} //включаем в число если знак перед числом
-        else
-        if(str[i]!=="*" && str[i]!=="/" && str[i]!=="+" && str[i]!=="-"){
-            a+=str[i];
-            }
+        if(posSimvol!=="+" && posSimvol!=="-" && posSimvol!=="*" && posSimvol!=="/" && posSimvol!=="."){
+        window.document.getElementById("edit").innerText+=str;}
         else{
-            znak=str[i];
-            b=str.substring(i+1,str.length);
-            break;
+            if(str!=="+" && str!=="-" && str!=="*" && str!=="/" && str!=="."){
+            window.document.getElementById("edit").innerText+=str;}  
         }
     }
-var rezultZurnal=a+znak+b;
-vivod(rezultZurnal);
+
 }
 
-//вывод в журнал
-function vivod(chislo){
+//вывод в журнал выражения и вывод результата
+enter.onclick=function(){
+    str=window.document.getElementById("edit").innerText; //выражение
     var data=new Date();
-    window.document.getElementById("edit").innerText=(eval(chislo)).toFixed(3);
+    window.document.getElementById("edit").innerText=(eval(str));
     window.document.getElementById("textLog").innerText+=data.getHours()+":"+
                                                             data.getMinutes()+":"+
                                                                 data.getMilliseconds()+" : "+
-                                                                    chislo+" = "+(eval(chislo)).toFixed(3)+"\n";
-flag=false; //можем производить действия с новым числом
+                                                                    str+" = "+eval(str)+"\n";
 }
