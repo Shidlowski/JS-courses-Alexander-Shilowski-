@@ -6,6 +6,10 @@ var Proger=(function(){
         this.lastName=lastName;
         this.level=level;
         this.status=true;
+
+        this.kolStrok=0;
+        this.costStrokLevel=0;
+        this.oklad=5;
     }
     Proger.prototype.getName=function(){
         return this.name;
@@ -34,21 +38,20 @@ var Proger=(function(){
         }
     }
 
-    var kolStrok;
-    var costStrokLevel=200;
-    var costProstoya=5;
+    
     
     Proger.prototype.kolStrokCode=function(){
         if(this.level==="junior") {
-            kolStrok=200;
+            this.kolStrok=50;
+            this.costStrokLevel=20;
         }else{
             if(this.level==="midle"){
-                kolStrok=400;
-                costStrokLevel=400;
+                this.kolStrok=100;
+                this.costStrokLevel=40;
             }
             else{
-                kolStrok=600;
-                costStrokLevel=600;
+                this.kolStrok=200;
+                this.costStrokLevel=60;
             }
         }
     }

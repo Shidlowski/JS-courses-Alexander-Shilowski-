@@ -79,8 +79,14 @@ function funct(){
                 document.getElementById("p"+svobodProger[key].getIdProger()).onclick();
             }
             manager[i].zveno(project[i],svobodProger); // отдаем менеджеру на обработку
-            
         }   
+
+        //отобразим работу занятых менеджеров
+        for(var i=0;i<manager.length;i++){
+            if(manager[i].getStatus()===false){
+                manager[i].tik();
+            }
+        }
 }
 
 //возращает есть ли свободные менеджера

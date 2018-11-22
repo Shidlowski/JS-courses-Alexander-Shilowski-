@@ -37,11 +37,13 @@ var Manager=(function(){
     // метод связывающий проект и программистов
     Manager.prototype.zveno=function(project,proger){
         this.status=false; //говорим что менеджер занят
-        addBlock(this.name,this.lastName,this.expirience,project,proger); //выводим данные о процессе
+        this.project=project;
+        this.proger=proger;
+        addBlock(this.idManager,this.name,this.lastName,this.expirience,project,proger); //выводим данные о процессе
     }
 
     //добавление блока вывода 
-    function addBlock(name,lastName,expirience,project,proger){
+    function addBlock(id,name,lastName,expirience,project,proger){
 
             var table=document.getElementById("block"); //в какую таблицу будем вставлять
             var row = document.createElement("tr"); //создание строки
@@ -54,6 +56,7 @@ var Manager=(function(){
             //добавлем элементы в наши ячейки
             //cтатус
             statusProject.appendChild(document.createTextNode("Выполняется"));
+            statusProject.id="status"+id;
             statusProject.style.backgroundColor="Red";
             row.appendChild(statusProject);
             //данные менеджера
@@ -61,12 +64,12 @@ var Manager=(function(){
             dataManager.style.backgroundColor="Green";
             row.appendChild(dataManager);
             //данные проекта
-            dataProject.appendChild(document.createTextNode("ПРОЕКТ: "+project.getTitle()+" стоимостью("+project.getCost()+" $)"));
+            dataProject.appendChild(document.createTextNode("ПРОЕКТ: "+project.getTitle()+" строк("+project.getKolStrok()+")"+" стоимостью("+project.getCost()+" $)"));
             dataProject.style.backgroundColor="Green";
             row.appendChild(dataProject);
             //сколько осталось строк кода
-            ostalosNapisat.appendChild("ОСТАЛОСЬ СТРОК: " + document.createTextNode(project.getKolStrok()));
-            ostalosNapisat.id="kolStrok"+this.idManager; //ид поля
+            ostalosNapisat.appendChild(document.createTextNode("ОСТАЛОСЬ СТРОК: "+project.getKolStrok()));
+            ostalosNapisat.id="kolStrok"+id; //ид поля
             ostalosNapisat.style.backgroundColor="Green";
             row.appendChild(ostalosNapisat);
             //список программистов определенных за проектом
@@ -82,6 +85,31 @@ var Manager=(function(){
             table.style.width="100%";
     }
 
+    //обновление данных проекта
+    Manager.prototype.tik=function(){
+        budgetCompany=document.getElementById("money").innerHTML;
+        ostalosStrok=document.getElementById("kolStrok"+this.getIdManager()).innerHTML;
+        ostalosStrok=ostalosStrok.substring(16,ostalosStrok.length);
+        checkStatus=document.getElementById("status"+this.getIdManager()).innerHTML;
+        //посчитаем сколько строк напишут программисты и сколько заработают
+        for(var i=0;i<this.proger.length;i++){
+            this.proger[i].kolStrokCode(); //определение зп и количество строк
+            budgetCompany=Number(budgetCompany)-this.proger[i].getCostStrokLevel(); //оплата в зависимости от уровня
+            document.getElementById("money").innerText=budgetCompany;
+            ostalosStrok=Number(ostalosStrok)-this.proger[i].getKolStrok(); //количество строк в зависимости от уровня
+     
+            document.getElementById("kolStrok"+this.getIdManager()).innerText="ОСТАЛОСЬ СТРОК: "+ostalosStrok;
+        }
+        if(ostalosStrok<=0) {
+        document.getElementById("status"+this.idManager).innerText="Выполнено";
+        document.getElementById("status"+this.idManager).style.backgroundColor="Green";
+
+        this.status=true; //делаем менеджера свободным
+        }
+        if(budgetCompany<=0) {return false;} //компания банкрот, конец игры
+        
+        return true; //игра продолжается
+    }
 
     return Manager;
 })()
