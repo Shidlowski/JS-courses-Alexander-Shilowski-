@@ -80,20 +80,6 @@ function funct(){
             }
             manager[i].zveno(project[i],svobodProger); // отдаем менеджеру на обработку
             
-
-            
-            /*
-            //отображение 
-            var table=document.getElementById("osnTable"); //в какую таблицу будем вставлять
-            var row = document.createElement("tr"); //создание строки
-            var cell = document.createElement("td"); //создаем ячейку в строке
-            
-            //добавлем элементы в нашу ячейку
-            var str=document.createTextNode(process[i][0].getIdProject);
-            cell.appendChild(str);
-            row.appendChild(cell);
-            tableInsertProger.appendChild(row);
-            i++;*/
         }   
 }
 
