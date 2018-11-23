@@ -55,11 +55,19 @@ function funct(){
     document.getElementById("tik").innerText=tik;
 
     //проверяем если ли у нас проект в очереди и менеджер с программистами
-        if(project.length!==0 && sManager() && sProger()){
+        if(sProject() && sManager() && sProger()){
             var i=0;
             //находим первого свободного менеджера
             for(i=0;i<manager.length;i++){
-                if(manager[i].getStatus()){
+                if(manager[i]!==null) {
+                    if(manager[i].getStatus()){
+                    break;
+                }
+            }
+            }
+            //находим первый свободный проект
+            for(k=0;k<project.length;k++){
+                if(project[k].getStatus()){
                     break;
                 }
             }
@@ -71,22 +79,34 @@ function funct(){
                 }
             }
             //удаляем проект из очереди
-            document.getElementById("pr"+project[i].getIdProject()).onclick();
+            document.getElementById("pr"+project[k].getIdProject()).onclick();
+            project[k].setStatus(false);//проект занят
             //удаляем первого менеджера из списка свободных
             document.getElementById("m"+manager[i].getIdManager()).onclick();
             //удаляем программистов которых забрал менеджер
             for(var key=0;key<svobodProger.length;key++){
                 document.getElementById("p"+svobodProger[key].getIdProger()).onclick();
             }
-            manager[i].zveno(project[i],svobodProger); // отдаем менеджеру на обработку
+            manager[i].zveno(project[k],svobodProger); // отдаем менеджеру на обработку
         }   
 
         //отобразим работу занятых менеджеров
         for(var i=0;i<manager.length;i++){
-            if(manager[i].getStatus()===false){
+           // warning("ВЫ ПРОИГРАЛИ! У ВАС НЕ ОСТАЛОСЬ НИ ЦЕНТА!");
+            if(manager[i]!==null && manager[i].getStatus()===false){ //елси менеджер занят
                 manager[i].tik();
+                if(manager[i]!==null && manager[i].getStatus()){ //елси менеджер довел проект до конца вернем его в список свободных
+                    
+                    //вставляем нового менеджера с такими же данными потому что просто вывести и потом удалить не работает( печалька
+                    manager[idManager]=new Manager(idManager,manager[i].getName(),manager[i].getLastName(),manager[i].getExpirience());
+                    insertManager(manager[idManager]);
+                    idManager++;
+                    manager[i]=null
+                }
             }
         }
+    
+
 }
 
 //возращает есть ли свободные менеджера
@@ -94,7 +114,7 @@ function sManager(){
     if(manager.length===0) {return false;}
     else{
     for(var k=0;k<manager.length;k++){
-        if(manager[k].getStatus()) {
+        if(manager[k]!==null && manager[k].getStatus()) {
         return true;    
         }
     }
@@ -108,6 +128,19 @@ function sProger(){
     else{
     for(var k=0;k<proger.length;k++){
         if(proger[k].getStatus()) {
+        return true;    
+        }
+    }
+    return false;
+}
+}
+
+//возращает есть ли свободные проекты
+function sProject(){
+    if(project.length===0) {return false;}
+    else{
+    for(var k=0;k<project.length;k++){
+        if(project[k].getStatus()) {
         return true;    
         }
     }
@@ -206,7 +239,6 @@ function insertManager(manager){
     var row = document.createElement("tr"); //создание строки
     var cell = document.createElement("td"); //создаем ячейку в строке
     var idManager="m"+manager.getIdManager(); //индивидуальный индификатор кнопки
-
     var deleted=document.createElement("input");
     deleted.id=idManager;
     deleted.type="button";

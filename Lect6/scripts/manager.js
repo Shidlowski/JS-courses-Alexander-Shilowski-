@@ -34,6 +34,10 @@ var Manager=(function(){
         }
     }
 
+    Manager.prototype.setStatus=function(bool){
+        this.status=bool;
+    }
+
     // метод связывающий проект и программистов
     Manager.prototype.zveno=function(project,proger){
         this.status=false; //говорим что менеджер занят
@@ -103,12 +107,10 @@ var Manager=(function(){
         if(ostalosStrok<=0) {
         document.getElementById("status"+this.idManager).innerText="Выполнено";
         document.getElementById("status"+this.idManager).style.backgroundColor="Green";
-
+        document.getElementById("kolStrok"+this.getIdManager()).innerText="ОСТАЛОСЬ СТРОК: 0";
         this.status=true; //делаем менеджера свободным
+
         }
-        if(budgetCompany<=0) {return false;} //компания банкрот, конец игры
-        
-        return true; //игра продолжается
     }
 
     return Manager;
