@@ -36,5 +36,7 @@ var Project=(function(){
         this.status=bool;
     }
 
+    
+
     return Project;
 })()

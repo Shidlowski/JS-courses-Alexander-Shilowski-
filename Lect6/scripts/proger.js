@@ -9,7 +9,6 @@ var Proger=(function(){
 
         this.kolStrok=0;
         this.costStrokLevel=0;
-        this.oklad=5;
     }
     Proger.prototype.getName=function(){
         return this.name;
@@ -77,6 +76,7 @@ var Proger=(function(){
     Proger.prototype.setStatus=function(bool){
         this.status=bool;
     }
+
 
     return Proger;
 })()

@@ -38,9 +38,16 @@ function start(){
        }
     } 
     else{
-        //остановка игры
+        if(document.getElementById("startButton").value!=="Начать новую игру"){
+             //остановка игры
         clearInterval(idInterval);
-        document.getElementById("startButton").value="Начать игру";
+        document.getElementById("startButton").value="Начать новую игру";
+        }
+        else{
+            //перезашружаем страницу для новой игры
+            window.location.reload();
+        }
+       
     }
 };
 
@@ -125,13 +132,17 @@ function chekGame(){
     if (document.getElementById("money").innerHTML===0) {
         //остановка игры
     clearInterval(idInterval);
-        warning("ВЫ ПРОИГРАЛИ! У ВАС НЕ ОСТАЛОСЬ НИ ЦЕНТА!");
+    document.getElementById("warning").innerText="ВЫ ПРОИГРАЛИ! У ВАС НЕ ОСТАЛОСЬ НИ ЦЕНТА!";
+    document.getElementById("visibleWarning").style.display="block";
+    document.getElementById("startButton").value="Начать новую игру";
     }
     else{
         if(document.getElementById("money").innerHTML<0) {
             //остановка игры
     clearInterval(idInterval);
-            warning("ВЫ ПРОИГРАЛИ! И ЕЩЕ ДОЛЖНЫ ОПЛАТИТЬ РАБОТУ ПРОГРАММИСТАМ!");
+            document.getElementById("warning").innerText="ВЫ ПРОИГРАЛИ! И ЕЩЕ ДОЛЖНЫ ОПЛАТИТЬ РАБОТУ ПРОГРАММИСТАМ!";
+            document.getElementById("visibleWarning").style.display="block";
+            document.getElementById("startButton").value="Начать новую игру";
         }
     }
 
@@ -219,7 +230,7 @@ function insertProject(project){
     deleted.id=idProject;
     deleted.type="button";
     deleted.value="Удалить (X)";
-    //удаление менеджера
+    //удаление проекта
     deleted.onclick=function(){
         cell.parentElement.removeChild(cell);
     }
@@ -273,7 +284,7 @@ function insertManager(manager){
     deleted.value="Удалить (X)";
     //удаление менеджера
     deleted.onclick=function(){
-        manager[idManager]=null;
+        manager[idManager.substring(1,idManager.length)]=null;
         cell.parentElement.removeChild(cell);
     }
 
