@@ -15,7 +15,7 @@ function click(elem,handler){
 }
 
 //наша скорость
-var delay=document.getElementById("delay").value;
+var delay=1000;
 //прошедшее время
 var tik=document.getElementById("tik").innerText;
 
@@ -59,12 +59,11 @@ function funct(){
             var i=0;
             //находим первого свободного менеджера
             for(i=0;i<manager.length;i++){
-                if(manager[i]!==null) {
-                    if(manager[i].getStatus()){
+                if(manager[i]!==null && manager[i].getStatus()){
                     break;
                 }
             }
-            }
+            
             //находим первый свободный проект
             for(k=0;k<project.length;k++){
                 if(project[k].getStatus()){
@@ -73,9 +72,10 @@ function funct(){
             }
             var svobodProger=[]; //cкладируем свободных программистов
             for(var key=0;key<proger.length;key++){
-                if(proger[key].getStatus()){ //елси программист свободен
+                if(proger[key]!==null && proger[key].getStatus()){ //елси программист свободен
                     proger[key].setStatus(false); //делаем его занятым
                 svobodProger.push(proger[key]);
+                proger[key]=null;
                 }
             }
             //удаляем проект из очереди
@@ -92,7 +92,7 @@ function funct(){
 
         //отобразим работу занятых менеджеров
         for(var i=0;i<manager.length;i++){
-           // warning("ВЫ ПРОИГРАЛИ! У ВАС НЕ ОСТАЛОСЬ НИ ЦЕНТА!");
+
             if(manager[i]!==null && manager[i].getStatus()===false){ //елси менеджер занят
                 manager[i].tik();
                 if(manager[i]!==null && manager[i].getStatus()){ //елси менеджер довел проект до конца вернем его в список свободных
@@ -101,11 +101,39 @@ function funct(){
                     manager[idManager]=new Manager(idManager,manager[i].getName(),manager[i].getLastName(),manager[i].getExpirience());
                     insertManager(manager[idManager]);
                     idManager++;
-                    manager[i]=null
+                    var m=i;
+                    
+                    //возращаем всех прогеров которые работали над проектом
+                    var arrAdd = manager[i].getJobProger();
+                    for(var i=0;i<arrAdd.length;i++){
+                        proger[idProger]=new Proger(idProger,arrAdd[i].getName(),arrAdd[i].getLastName(),arrAdd[i].getLevel());
+                        insertProger(proger[idProger]);
+                            idProger++;
+                    }
+
+                    manager[m]=null; //удаляем данные о менеджере
+
                 }
+                chekGame();
             }
         }
     
+
+}
+
+function chekGame(){
+    if (document.getElementById("money").innerHTML===0) {
+        //остановка игры
+    clearInterval(idInterval);
+        warning("ВЫ ПРОИГРАЛИ! У ВАС НЕ ОСТАЛОСЬ НИ ЦЕНТА!");
+    }
+    else{
+        if(document.getElementById("money").innerHTML<0) {
+            //остановка игры
+    clearInterval(idInterval);
+            warning("ВЫ ПРОИГРАЛИ! И ЕЩЕ ДОЛЖНЫ ОПЛАТИТЬ РАБОТУ ПРОГРАММИСТАМ!");
+        }
+    }
 
 }
 
@@ -127,7 +155,7 @@ function sProger(){
     if(proger.length===0) {return false;}
     else{
     for(var k=0;k<proger.length;k++){
-        if(proger[k].getStatus()) {
+        if(proger[k]!==null && proger[k].getStatus()) {
         return true;    
         }
     }
@@ -245,6 +273,7 @@ function insertManager(manager){
     deleted.value="Удалить (X)";
     //удаление менеджера
     deleted.onclick=function(){
+        manager[idManager]=null;
         cell.parentElement.removeChild(cell);
     }
 
@@ -326,5 +355,5 @@ function warning(line){
     setTimeout(()=>{
     document.getElementById("visibleWarning").style.display="none"; 
     }
-    ,2000);
+    ,5000);
 }

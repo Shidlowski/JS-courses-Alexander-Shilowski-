@@ -100,7 +100,7 @@ var Manager=(function(){
             this.proger[i].kolStrokCode(); //определение зп и количество строк
             budgetCompany=Number(budgetCompany)-this.proger[i].getCostStrokLevel(); //оплата в зависимости от уровня
             document.getElementById("money").innerText=budgetCompany;
-            ostalosStrok=Number(ostalosStrok)-this.proger[i].getKolStrok(); //количество строк в зависимости от уровня
+            ostalosStrok=Number(ostalosStrok)-Number(this.proger[i].getKolStrok())*Number(this.expirience); //количество строк в зависимости от уровня
      
             document.getElementById("kolStrok"+this.getIdManager()).innerText="ОСТАЛОСЬ СТРОК: "+ostalosStrok;
         }
@@ -109,9 +109,15 @@ var Manager=(function(){
         document.getElementById("status"+this.idManager).style.backgroundColor="Green";
         document.getElementById("kolStrok"+this.getIdManager()).innerText="ОСТАЛОСЬ СТРОК: 0";
         this.status=true; //делаем менеджера свободным
+            //прибавим к бюджету компании оплату за проект
+        document.getElementById("money").innerText=Number(document.getElementById("money").innerHTML)+Number(this.project.getCost());
+
 
         }
     }
 
+    Manager.prototype.getJobProger=function(){
+        return this.proger;
+    }
     return Manager;
 })()
