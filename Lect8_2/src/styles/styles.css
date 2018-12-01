@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    font-style: italic;
+}
+
+table {
+    width: 100%; /* Ширина таблицы */
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+}
+td, th {
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 1px solid black; /* Параметры рамки */
+}
+
+.start{
+padding-left: 5%;
+background-color: rgb(93, 163, 204);
+font-family: Arial, sans-serif;
+font-size: 25px;
+font-style: italic;
+}
+
+.inputText {
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    font-style: italic;
+    border-color: blueviolet;
+}
+
+.inputButton{
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    font-style: italic;
+    border-color: rgb(80, 88, 168);
+}
+
+.nameColumns{
+    font-size: 30px;
+    text-align: center;
+}
+
+.addButton{
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    font-style: italic;
+}
+
+td >p {
+    text-align: center;
+    font-size: 20px;
+}
+
+.buttonCenter{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.visible{
+    display: none;
+}
+
+.warning{
+    height: 40px;
+    width: 100%;
+    background-color:rgb(211, 107, 107);
+    text-align: center;
+    margin: auto;
+    border-radius: 5px;
+    line-height: 40px;
+}
